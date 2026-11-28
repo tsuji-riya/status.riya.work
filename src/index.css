@@ -195,3 +195,281 @@ body {
 .bar-down {
   background-color: var(--bgColor-danger-emphasis);
 }
+
+/* Node characters at the top of the hero. Sizes are in em so the whole rack scales with its font-size on narrow screens */
+.rack {
+  --ink: #5b4b8a;
+  font-size: clamp(4px, calc((100vw - 32px) / 84), 10px);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2.2em;
+  padding: 3em 0 1.2em;
+  margin-bottom: var(--base-size-16);
+}
+
+/* The floor they stand on */
+.rack::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.6em;
+  height: 1em;
+  border-radius: 99em;
+  background: var(--borderColor-sponsors-muted);
+}
+
+.node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6em;
+  animation: node-bounce 1.5s ease-in-out infinite var(--d);
+}
+
+.node-name {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--fgColor-muted);
+}
+
+.node-body {
+  position: relative;
+  border: 0.3em solid var(--ink);
+  border-radius: 1.8em;
+  box-shadow: 0 0.5em 0 #5b4b8a33;
+}
+
+.node-mini {
+  width: 9.2em;
+  height: 9.6em;
+  background: #fff;
+}
+
+/* A raspberry: wider at the top, dotted, with two leaves */
+.node-pi {
+  width: 8.2em;
+  height: 8.8em;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  background-color: #f0668f;
+  background-image: radial-gradient(circle at 50% 50%, #ff9ab6 0 0.4em, transparent 0.5em);
+  background-size: 1.6em 1.4em;
+}
+
+.node-pi::before,
+.node-pi::after {
+  content: '';
+  position: absolute;
+  top: -2em;
+  width: 3em;
+  height: 2em;
+  background: #7fd48a;
+  border: 0.3em solid var(--ink);
+  border-radius: 0 100% 0 100%;
+}
+
+.node-pi::before {
+  left: 0.8em;
+  transform: rotate(-10deg);
+}
+
+.node-pi::after {
+  right: 0.8em;
+  transform: scaleX(-1) rotate(-10deg);
+}
+
+.node-face {
+  position: absolute;
+  inset: 30% 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 1.6em;
+}
+
+.node-eye {
+  width: 0.9em;
+  height: 1.2em;
+  border-radius: 50%;
+  background: #3d3160;
+  animation: node-blink 3s infinite calc(var(--d) * 2);
+}
+
+.node-mouth {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 1.4em;
+  height: 0.8em;
+  margin-left: -0.7em;
+  border: 0.3em solid #3d3160;
+  border-top: none;
+  border-radius: 0 0 1.2em 1.2em;
+}
+
+.node-cheek {
+  position: absolute;
+  top: 48%;
+  width: 1.2em;
+  height: 0.7em;
+  border-radius: 50%;
+  background: #ff9fb8;
+  opacity: 0.8;
+}
+
+.node-pi .node-cheek {
+  background: #ffd1dc;
+}
+
+.node-cheek-l {
+  left: 12%;
+}
+
+.node-cheek-r {
+  right: 12%;
+}
+
+.node-leds {
+  position: absolute;
+  left: 50%;
+  bottom: 1.1em;
+  display: flex;
+  gap: 0.5em;
+  transform: translateX(-50%);
+}
+
+.node-led {
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  background: #4fd18b;
+  box-shadow: 0 0 0 0.2em #fff;
+  animation: node-led 0.75s steps(1) infinite var(--d);
+}
+
+.node-led-b {
+  background: #7cc4ff;
+}
+
+/* Down: stops bouncing, tilts, greys out, × eyes, red LEDs, 💤 */
+.node-down {
+  animation: none;
+}
+
+.node-down .node-body {
+  transform: rotate(-6deg);
+}
+
+.node-down .node-mini {
+  background: #e9e6ef;
+}
+
+.node-down .node-pi {
+  background-color: #b9b2c4;
+  background-image: radial-gradient(circle at 50% 50%, #d3cddd 0 0.4em, transparent 0.5em);
+}
+
+.node-down .node-pi::before,
+.node-down .node-pi::after {
+  background: #c3cbc4;
+}
+
+.node-down .node-eye {
+  width: auto;
+  height: auto;
+  background: none;
+  animation: none;
+  font-size: 1.6em;
+  font-weight: 800;
+  line-height: 1;
+  color: #3d3160;
+}
+
+.node-down .node-mouth {
+  top: 58%;
+  height: 0;
+  border-radius: 0;
+}
+
+.node-down .node-cheek {
+  opacity: 0;
+}
+
+.node-down .node-led {
+  background: #ff5d73;
+}
+
+.node-down .node-name {
+  color: var(--fgColor-danger);
+}
+
+.node-zzz {
+  position: absolute;
+  top: -2.6em;
+  right: -1em;
+  font-size: 1.8em;
+  animation: node-float 3s ease-in-out infinite var(--d);
+}
+
+.rack-cat {
+  margin: 0 0 0.5em -0.3em;
+  font-size: 3.4em;
+  transform-origin: bottom center;
+  animation: node-sway 3s ease-in-out infinite;
+}
+
+@keyframes node-bounce {
+  50% {
+    transform: translateY(-0.7em);
+  }
+}
+
+@keyframes node-blink {
+  0%,
+  44%,
+  50%,
+  100% {
+    transform: scaleY(1);
+  }
+  47% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes node-led {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes node-float {
+  0% {
+    transform: translate(0, 0.6em);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0.8em, -1.4em);
+    opacity: 0;
+  }
+}
+
+@keyframes node-sway {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rack * {
+    animation: none !important;
+  }
+}
