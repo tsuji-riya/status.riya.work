@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { Avatar, Heading, Label, Link, LinkButton, Spinner, Stack, Text, VisuallyHidden } from '@primer/react'
 import { CheckCircleFillIcon, HomeIcon, LinkExternalIcon, XCircleFillIcon } from '@primer/octicons-react'
 import { NoiserText } from 'noisytext/react'
@@ -16,6 +16,43 @@ const groups = [
   { id: 'sites', emoji: '🎀', title: 'Sites' },
   { id: 'cluster', emoji: '☸️', title: 'おうち k3s' },
 ]
+
+// Node characters at the top; hardware follows the lab README (node1-3 mini PCs, node4-7 Raspberry Pi)
+const NODES = ['node1', 'node2', 'node3', 'node4', 'node5', 'node6', 'node7']
+const MINI_PCS = new Set(['node1', 'node2', 'node3'])
+
+// Decorative only: the same nodes are listed with text in the cluster section below
+function Rack({ endpoints, failed }: { endpoints?: Endpoint[]; failed: boolean }) {
+  return (
+    <div className="rack" aria-hidden="true">
+      {NODES.map((name, i) => {
+        const up = !failed && (endpoints?.find((e) => e.group === 'cluster' && e.name === name)?.results.at(-1)?.success ?? false)
+        const eye = <span className="node-eye">{up ? '' : '×'}</span>
+        return (
+          <div key={name} className={up ? 'node' : 'node node-down'} style={{ '--d': `${-(i * 0.21).toFixed(2)}s` } as CSSProperties}>
+            {!up && <span className="node-zzz">💤</span>}
+            <div className={`node-body ${MINI_PCS.has(name) ? 'node-mini' : 'node-pi'}`}>
+              <div className="node-face">
+                {eye}
+                {eye}
+              </div>
+              <span className="node-cheek node-cheek-l" />
+              <span className="node-cheek node-cheek-r" />
+              <span className="node-mouth" />
+              <span className="node-leds">
+                <span className="node-led" />
+                <span className="node-led node-led-b" />
+                <span className="node-led" />
+              </span>
+            </div>
+            <span className="node-name">{name}</span>
+          </div>
+        )
+      })}
+      <span className="rack-cat">🐈</span>
+    </div>
+  )
+}
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -132,6 +169,7 @@ export default function App() {
         <section className="hero" aria-live="polite">
           {mood ? (
             <>
+              <Rack endpoints={endpoints} failed={failed} />
               <span className="hero-emoji" aria-hidden="true">
                 {mood.emoji}
               </span>
